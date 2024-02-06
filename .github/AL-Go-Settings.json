@@ -1,6 +1,6 @@
 {
   "type": "PTE",
-  "templateUrl": "https://github.com/microsoft/AL-Go-PTE@PPPreview",
+  "templateUrl": "https://github.com/microsoft/AL-Go-PTE@preview",
   "powerPlatformSolutionFolder": "TakeOrder",
   "environments": [
     "Staging"
