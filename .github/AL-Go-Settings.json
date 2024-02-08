@@ -11,6 +11,5 @@
     "ppEnvironmentUrl": "https://orgda6e1cf7.crm.dynamics.com/",
     "continuousDeployment": false
   },
-  "templateSha": "c0ab28a64bc0438a8bf7fb759d14850729c1d354",
-  "bcContainerHelperVersion": "https://github.com/freddydk/navcontainerhelper/archive/refs/heads/unprocessible.zip"
+  "templateSha": "c0ab28a64bc0438a8bf7fb759d14850729c1d354"
 }
