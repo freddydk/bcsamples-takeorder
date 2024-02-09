@@ -89,7 +89,9 @@ jobs:
 
       - name: Pull changes from Power Platform environment
         uses: freddydk/AL-Go/Actions/PullPowerPlatformChanges@PPP
-        with: 
+        env:
+          Secrets: '${{ steps.ReadSecrets.outputs.Secrets }}'
+        with:
           shell: powershell
           actionsRepo: 'freddydk/AL-Go/Actions@PPP'
           token: ${{ steps.ReadSecrets.outputs.TokenForPush }}
