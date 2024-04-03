@@ -1,6 +1,6 @@
 {
   "type": "PTE",
-  "templateUrl": "https://github.com/freddydk/AL-Go@PPP",
+  "templateUrl": "https://github.com/freddydk/AL-Go@PPP-split",
   "powerPlatformSolutionFolder": "TakeOrder",
   "environments": [
     "Staging"
@@ -11,5 +11,5 @@
     "ppEnvironmentUrl": "https://orge3fa4a53.crm.dynamics.com/",
     "continuousDeployment": false
   },
-  "templateSha": "c53bc32bd5b873ad86b841df989ed7daec4e2f25"
+  "templateSha": "0645067d5395e9d03de5c171559fcd5d2785d533"
 }

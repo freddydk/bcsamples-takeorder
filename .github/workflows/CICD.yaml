@@ -16,6 +16,7 @@ defaults:
 permissions:
   contents: read
   actions: read
+  pages: read
 
 env:
   workflowDepth: 1
@@ -42,7 +43,7 @@ jobs:
       workflowDepth: ${{ steps.DetermineWorkflowDepth.outputs.WorkflowDepth }}
     steps:
       - name: Dump Workflow Information
-        uses: freddydk/AL-Go/Actions/DumpWorkflowInfo@PPP
+        uses: freddydk/AL-Go/Actions/DumpWorkflowInfo@PPP-split
         with:
           shell: powershell
 
@@ -53,14 +54,14 @@ jobs:
 
       - name: Initialize the workflow
         id: init
-        uses: freddydk/AL-Go/Actions/WorkflowInitialize@PPP
+        uses: freddydk/AL-Go/Actions/WorkflowInitialize@PPP-split
         with:
           shell: powershell
           eventId: "DO0091"
 
       - name: Read settings
         id: ReadSettings
-        uses: freddydk/AL-Go/Actions/ReadSettings@PPP
+        uses: freddydk/AL-Go/Actions/ReadSettings@PPP-split
         with:
           shell: powershell
           get: type
@@ -72,14 +73,14 @@ jobs:
 
       - name: Determine Projects To Build
         id: determineProjectsToBuild
-        uses: freddydk/AL-Go/Actions/DetermineProjectsToBuild@PPP
+        uses: freddydk/AL-Go/Actions/DetermineProjectsToBuild@PPP-split
         with:
           shell: powershell
           maxBuildDepth: ${{ env.workflowDepth }}
 
       - name: Determine Delivery Target Secrets
         id: DetermineDeliveryTargetSecrets
-        uses: freddydk/AL-Go/Actions/DetermineDeliveryTargets@PPP
+        uses: freddydk/AL-Go/Actions/DetermineDeliveryTargets@PPP-split
         with:
           shell: powershell
           projectsJson: '${{ steps.determineProjectsToBuild.outputs.ProjectsJson }}'
@@ -87,7 +88,7 @@ jobs:
 
       - name: Read secrets
         id: ReadSecrets
-        uses: freddydk/AL-Go/Actions/ReadSecrets@PPP
+        uses: freddydk/AL-Go/Actions/ReadSecrets@PPP-split
         with:
           shell: powershell
           gitHubSecrets: ${{ toJson(secrets) }}
@@ -95,7 +96,7 @@ jobs:
 
       - name: Determine Delivery Targets
         id: DetermineDeliveryTargets
-        uses: freddydk/AL-Go/Actions/DetermineDeliveryTargets@PPP
+        uses: freddydk/AL-Go/Actions/DetermineDeliveryTargets@PPP-split
         env:
           Secrets: '${{ steps.ReadSecrets.outputs.Secrets }}'
         with:
@@ -105,7 +106,7 @@ jobs:
 
       - name: Determine Deployment Environments
         id: DetermineDeploymentEnvironments
-        uses: freddydk/AL-Go/Actions/DetermineDeploymentEnvironments@PPP
+        uses: freddydk/AL-Go/Actions/DetermineDeploymentEnvironments@PPP-split
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
@@ -121,13 +122,13 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Read settings
-        uses: freddydk/AL-Go/Actions/ReadSettings@PPP
+        uses: freddydk/AL-Go/Actions/ReadSettings@PPP-split
         with:
           shell: powershell
           get: templateUrl
 
       - name: Check for updates to AL-Go system files
-        uses: freddydk/AL-Go/Actions/CheckForUpdates@PPP
+        uses: freddydk/AL-Go/Actions/CheckForUpdates@PPP-split
         with:
           shell: powershell
           templateUrl: ${{ env.templateUrl }}
@@ -180,16 +181,16 @@ jobs:
           path: '.artifacts'
 
       - name: Read settings
-        uses: freddydk/AL-Go/Actions/ReadSettings@PPP
+        uses: freddydk/AL-Go/Actions/ReadSettings@PPP-split
         with:
           shell: powershell
 
       - name: Setup Pages
         if: needs.Initialization.outputs.deployALDocArtifact == 1
-        uses: actions/configure-pages@v4
+        uses: actions/configure-pages@v5
 
       - name: Build Reference Documentation
-        uses: freddydk/AL-Go/Actions/BuildReferenceDocumentation@PPP
+        uses: freddydk/AL-Go/Actions/BuildReferenceDocumentation@PPP-split
         with:
           shell: powershell
           artifacts: '.artifacts'
@@ -223,7 +224,7 @@ jobs:
           path: '.artifacts'
 
       - name: Read settings
-        uses: freddydk/AL-Go/Actions/ReadSettings@PPP
+        uses: freddydk/AL-Go/Actions/ReadSettings@PPP-split
         with:
           shell: powershell
           get: type,powerPlatformSolutionFolder
@@ -237,7 +238,7 @@ jobs:
 
       - name: Read secrets
         id: ReadSecrets
-        uses: freddydk/AL-Go/Actions/ReadSecrets@PPP
+        uses: freddydk/AL-Go/Actions/ReadSecrets@PPP-split
         with:
           shell: powershell
           gitHubSecrets: ${{ toJson(secrets) }}
@@ -245,7 +246,7 @@ jobs:
 
       - name: Deploy to Business Central
         id: Deploy
-        uses: freddydk/AL-Go/Actions/Deploy@PPP
+        uses: freddydk/AL-Go/Actions/Deploy@PPP-split
         env:
           Secrets: '${{ steps.ReadSecrets.outputs.Secrets }}'
         with:
@@ -257,7 +258,7 @@ jobs:
 
       - name: Deploy to Power Platform
         if: env.type == 'PTE' && env.powerPlatformSolutionFolder != ''
-        uses: freddydk/AL-Go/Actions/DeployPowerPlatform@PPP
+        uses: freddydk/AL-Go/Actions/DeployPowerPlatform@PPP-split
         env:
           Secrets: '${{ steps.ReadSecrets.outputs.Secrets }}'
         with:
@@ -285,20 +286,20 @@ jobs:
           path: '.artifacts'
 
       - name: Read settings
-        uses: freddydk/AL-Go/Actions/ReadSettings@PPP
+        uses: freddydk/AL-Go/Actions/ReadSettings@PPP-split
         with:
           shell: powershell
 
       - name: Read secrets
         id: ReadSecrets
-        uses: freddydk/AL-Go/Actions/ReadSecrets@PPP
+        uses: freddydk/AL-Go/Actions/ReadSecrets@PPP-split
         with:
           shell: powershell
           gitHubSecrets: ${{ toJson(secrets) }}
           getSecrets: '${{ matrix.deliveryTarget }}Context'
 
       - name: Deliver
-        uses: freddydk/AL-Go/Actions/Deliver@PPP
+        uses: freddydk/AL-Go/Actions/Deliver@PPP-split
         env:
           Secrets: '${{ steps.ReadSecrets.outputs.Secrets }}'
         with:
@@ -318,7 +319,7 @@ jobs:
 
       - name: Finalize the workflow
         id: PostProcess
-        uses: freddydk/AL-Go/Actions/WorkflowPostProcess@PPP
+        uses: freddydk/AL-Go/Actions/WorkflowPostProcess@PPP-split
         with:
           shell: powershell
           eventId: "DO0091"

@@ -1,4 +1,4 @@
-name: " Pull Power Platform changes"
+name: ' Pull Power Platform changes'
 
 on:
   workflow_dispatch:
@@ -36,7 +36,7 @@ jobs:
 
       - name: Initialize the workflow
         id: init
-        uses: freddydk/AL-Go/Actions/WorkflowInitialize@PPP
+        uses: freddydk/AL-Go/Actions/WorkflowInitialize@PPP-split
         with:
           shell: powershell
           eventId: "DO0103"
@@ -50,14 +50,14 @@ jobs:
           Add-Content -encoding utf8 -Path $env:GITHUB_ENV -Value "envName=$envName"
 
       - name: Read settings
-        uses: freddydk/AL-Go/Actions/ReadSettings@PPP
+        uses: freddydk/AL-Go/Actions/ReadSettings@PPP-split
         with:
           shell: powershell
           get: powerPlatformSolutionFolder
 
       - name: Read secrets
         id: ReadSecrets
-        uses: freddydk/AL-Go/Actions/ReadSecrets@PPP
+        uses: freddydk/AL-Go/Actions/ReadSecrets@PPP-split
         with:
           shell: powershell
           gitHubSecrets: ${{ toJson(secrets) }}
@@ -66,7 +66,7 @@ jobs:
 
       - name: Determine Deployment Environments
         id: DetermineDeploymentEnvironments
-        uses: freddydk/AL-Go/Actions/DetermineDeploymentEnvironments@PPP
+        uses: freddydk/AL-Go/Actions/DetermineDeploymentEnvironments@PPP-split
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
@@ -81,14 +81,14 @@ jobs:
           $errorActionPreference = "Stop"; $ProgressPreference = "SilentlyContinue"; Set-StrictMode -Version 2.0
           $solutionFolder = $env:_solutionFolder
           if ($solutionFolder -eq '') {
-            write-host "Solution folder is not provided. Taking the folder from AL-Go settings"
+            Write-Host "Solution folder is not provided. Taking the folder from AL-Go settings"
             $solutionFolder = $env:powerPlatformSolutionFolder
           }
-          write-host "Solution folder: $solutionFolder"
+          Write-Host "Solution folder: $solutionFolder"
           Add-Content -encoding utf8 -Path $env:GITHUB_ENV -Value "solutionFolder=$solutionFolder"
 
       - name: Pull changes from Power Platform environment
-        uses: freddydk/AL-Go/Actions/PullPowerPlatformChanges@PPP
+        uses: freddydk/AL-Go/Actions/PullPowerPlatformChanges@PPP-split
         env:
           Secrets: '${{ steps.ReadSecrets.outputs.Secrets }}'
         with:
@@ -101,7 +101,7 @@ jobs:
 
       - name: Finalize the workflow
         if: always()
-        uses: freddydk/AL-Go/Actions/WorkflowPostProcess@PPP
+        uses: freddydk/AL-Go/Actions/WorkflowPostProcess@PPP-split
         with:
           shell: powershell
           eventId: "DO0103"

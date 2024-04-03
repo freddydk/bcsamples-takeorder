@@ -30,19 +30,19 @@ jobs:
 
       - name: Initialize the workflow
         id: init
-        uses: freddydk/AL-Go/Actions/WorkflowInitialize@PPP
+        uses: freddydk/AL-Go/Actions/WorkflowInitialize@PPP-split
         with:
           shell: powershell
           eventId: "DO0097"
         
       - name: Read settings
-        uses: freddydk/AL-Go/Actions/ReadSettings@PPP
+        uses: freddydk/AL-Go/Actions/ReadSettings@PPP-split
         with:
           shell: powershell
 
       - name: Determine Deployment Environments
         id: DetermineDeploymentEnvironments
-        uses: freddydk/AL-Go/Actions/DetermineDeploymentEnvironments@PPP
+        uses: freddydk/AL-Go/Actions/DetermineDeploymentEnvironments@PPP-split
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
@@ -52,10 +52,10 @@ jobs:
             
       - name: Setup Pages
         if: steps.DetermineDeploymentEnvironments.outputs.deployALDocArtifact == 1
-        uses: actions/configure-pages@v4
+        uses: actions/configure-pages@v5
         
       - name: Build Reference Documentation
-        uses: freddydk/AL-Go/Actions/BuildReferenceDocumentation@PPP
+        uses: freddydk/AL-Go/Actions/BuildReferenceDocumentation@PPP-split
         with:
           shell: powershell
           artifacts: 'latest'
