@@ -61,14 +61,14 @@ jobs:
           lfs: true
 
       - name: Read settings
-        uses: freddydk/AL-Go/Actions/ReadSettings@PPP-split
+        uses: freddydk/AL-Go/Actions/ReadSettings@PPP
         with:
           shell: ${{ inputs.shell }}
           project: ${{ inputs.project }}
           get: type,powerPlatformSolutionFolder,appRevision,appBuild
 
       - name: Build
-        uses: freddydk/AL-Go/Actions/BuildPowerPlatform@PPP-split
+        uses: freddydk/AL-Go/Actions/BuildPowerPlatform@PPP
         with:
           shell: ${{ inputs.shell }}
           parentTelemetryScopeJson: ${{ inputs.parentTelemetryScopeJson }}
@@ -80,7 +80,7 @@ jobs:
 
       - name: Calculate Artifact names
         id: calculateArtifactsNames
-        uses: freddydk/AL-Go/Actions/CalculateArtifactNames@PPP-split
+        uses: freddydk/AL-Go/Actions/CalculateArtifactNames@PPP
         if: success() || failure()
         with:
           shell: ${{ inputs.shell }}
