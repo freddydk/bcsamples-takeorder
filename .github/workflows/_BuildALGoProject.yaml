@@ -1,6 +1,6 @@
 name: '_Build AL-Go project'
 
-run-name: 'Build AL ${{ inputs.project }}'
+run-name: 'Build ${{ inputs.project }}'
 
 on:
   workflow_call:
@@ -11,7 +11,7 @@ on:
         default: powershell
         type: string
       runsOn:
-        description: JSON-formatted string og the types of machine to run the build job on
+        description: JSON-formatted string of the types of machine to run the build job on
         required: true
         type: string
       checkoutRef:
@@ -71,6 +71,10 @@ on:
         description: Specifies the telemetry scope for the telemetry signal
         required: false
         type: string
+
+permissions:
+  contents: read
+  actions: read
 
 env:
   ALGoOrgSettings: ${{ vars.ALGoOrgSettings }}
